@@ -4,30 +4,36 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private int gameId;
-    private String gameName;
+    private int id;
+    private String name;
     private ArrayList<GameSession> sessions;
 
+    public Game(int id, String name, ArrayList<GameSession> sessions) {
+        this.id = id;
+        this.name = name;
+        this.sessions = sessions;
+    }
+
     public Game() {
-        gameId = 0;
-        gameName = null;
+        id = 0;
+        name = null;
         sessions = null;
     }
 
-    public void setGameId(int gameId) {
-        this.gameId = gameId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getGameId() {
-        return gameId;
+    public int getId() {
+        return id;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getGameName() {
-        return gameName;
+    public String getName() {
+        return name;
     }
 
     public void setSessions(ArrayList<GameSession> sessions) {
