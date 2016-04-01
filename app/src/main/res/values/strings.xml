@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">AndroidScoreTracker</string>
     <string name="game_name_hint">Game name</string>
+    <string name="game_session_name_hint">Session name</string>
     <string name="add">Add</string>
     <string name="update">Update</string>
     <string name="add_game">Add Game</string>
+    <string name="add_game_session">Add Game Session</string>
+    <string name="has_draw">Has draw</string>
+    <string name="game_spinner_label">Choose a game</string>
+    <string name="start_date_label">Start date</string>
+    <string name="end_date_label">End date</string>
 </resources>

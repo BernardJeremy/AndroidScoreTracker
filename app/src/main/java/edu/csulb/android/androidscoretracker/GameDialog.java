@@ -37,13 +37,12 @@ public class GameDialog extends DialogFragment implements OnClickListener {
 
         gameNameTxt = (EditText) view.findViewById(R.id.game_name);
         addButton = (Button) view.findViewById(R.id.button_add);
+        addButton.setOnClickListener(this);
 
         if (game != null) {
             gameNameTxt.setText(game.getName());
             addButton.setText(R.string.update);
         }
-
-        addButton.setOnClickListener(this);
 
         return view;
     }
@@ -60,16 +59,16 @@ public class GameDialog extends DialogFragment implements OnClickListener {
         if (game == null) {
             dbGame.addGame(new Game(0, gameName, null));
         } else {
-            dbGame.updateGame(this.game);
+            dbGame.updateGame(new Game(this.game.getId(), gameName, null));
         }
         this.dismiss();
     }
 
-    public static void showAddDialog(Activity context) {
-        GameDialog.showAddDialog(context, null);
+    public static void showDialog(Activity context) {
+        GameDialog.showDialog(context, null);
     }
 
-    public static void showAddDialog(Activity context, Game game) {
+    public static void showDialog(Activity context, Game game) {
         FragmentTransaction ft = context.getFragmentManager().beginTransaction();
         Fragment prev = context.getFragmentManager().findFragmentByTag("dialog");
         if (prev != null) {

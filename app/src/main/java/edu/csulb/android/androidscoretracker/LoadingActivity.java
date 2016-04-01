@@ -15,6 +15,8 @@ public class LoadingActivity extends AppCompatActivity {
         dbSession = new GameSessionDatabaseManager();
         dbGame = new GameDatabaseManager();
         //SQLiteDatabase.deleteDatabase(new File("/data/data/edu.csulb.android.androidscoretracker/ScoreTracker.db")); //-> to delete all the database
+        GameSessionDialog.showDialog(this, dbSession.getGameSession(1));
+        //GameDialog.showDialog(this);
     }
 
 

@@ -9,8 +9,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="@string/game_name_hint"
-            android:nextFocusDown="@+id/etxt_dob"
+            android:hint="@string/game_session_name_hint"
             android:singleLine="true" />
 
     <Button
@@ -20,12 +19,5 @@
         android:id="@+id/button_add"
         android:layout_below="@+id/game_name"
         android:layout_centerHorizontal="true" />
-
-    <!--<Button
-        android:id="@+id/button_add"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="@string/add" />-->
 
 </RelativeLayout>
