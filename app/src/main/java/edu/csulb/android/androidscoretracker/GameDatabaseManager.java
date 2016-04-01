@@ -3,6 +3,7 @@ package edu.csulb.android.androidscoretracker;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class GameDatabaseManager {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, game.getName());
         db.insert(TABLE_NAME, null, values);
+        Log.d("DB", "ADDED");
     }
 
     //Get a game from database by the name
@@ -79,7 +81,8 @@ public class GameDatabaseManager {
     public void updateGame(Game game) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, game.getName());
-        db.update(TABLE_NAME, values, "id = ?", new String[] {Integer.toString(game.getId())});
+        db.update(TABLE_NAME, values, "id = ?", new String[]{Integer.toString(game.getId())});
+        Log.d("DB", "UPDATED");
     }
 
     //Delete a game from a database
