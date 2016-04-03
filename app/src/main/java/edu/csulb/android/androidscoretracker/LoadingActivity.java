@@ -5,13 +5,19 @@ import android.os.Bundle;
 
 public class LoadingActivity extends AppCompatActivity {
 
-    private DatabaseInterface db;
+    private GameSessionDatabaseManager dbSession;
+    private GameDatabaseManager dbGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        db = new DatabaseInterface();
-        //SQLiteDatabase.deleteDatabase(new File("/data/data/edu.csulb.android.androidscoretracker/ScoreTracker.db")); -> to delete all the database
+        dbSession = new GameSessionDatabaseManager();
+        dbGame = new GameDatabaseManager();
+        //SQLiteDatabase.deleteDatabase(new File("/data/data/edu.csulb.android.androidscoretracker/ScoreTracker.db")); //-> to delete all the database
+        GameSessionDialog.showDialog(this, dbSession.getGameSession(1));
+        //GameDialog.showDialog(this);
     }
+
+
 }
