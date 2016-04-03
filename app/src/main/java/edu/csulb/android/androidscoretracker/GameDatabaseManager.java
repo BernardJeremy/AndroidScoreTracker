@@ -3,6 +3,7 @@ package edu.csulb.android.androidscoretracker;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,15 @@ public class GameDatabaseManager {
         return game;
     }
 
+    public int countGame() {
+        Cursor res= db.rawQuery("select count(*) from " + TABLE_NAME + ";", null);
+        res.moveToFirst();
+        int count= res.getInt(0);
+        res.close();
+
+        return count;
+    }
+
     //Get all games from the database
     public ArrayList<Game> getAllGames() {
         ArrayList<Game> games = new ArrayList<>();
@@ -79,7 +89,7 @@ public class GameDatabaseManager {
     public void updateGame(Game game) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, game.getName());
-        db.update(TABLE_NAME, values, "id = ?", new String[] {Integer.toString(game.getId())});
+        db.update(TABLE_NAME, values, "id = ?", new String[]{Integer.toString(game.getId())});
     }
 
     //Delete a game from a database

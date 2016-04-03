@@ -27,7 +27,7 @@ public class GameSessionDatabaseManager {
 
     public GameSessionDatabaseManager() {
         db = DatabaseManager.getInstance().getDb();
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     //add a game in the database
@@ -140,7 +140,7 @@ public class GameSessionDatabaseManager {
             try {
                 gameSession.setStartDate((dateFormat.parse(startDate)));
                 gameSession.setEndDate((dateFormat.parse(endDate)));
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 Log.d("date-parser", "Fail to parse date : " + e.toString());
             }
             gameSessions.add(gameSession);
@@ -159,8 +159,12 @@ public class GameSessionDatabaseManager {
         values.put(COLUMN_NB_WIN, gameSession.getNbWin());
         values.put(COLUMN_NB_LOOSE, gameSession.getNbLoose());
         values.put(COLUMN_NB_DRAW, gameSession.getNbDraw());
-        values.put(COLUMN_START_DATE, dateFormat.format(gameSession.getStartDate()));
-        values.put(COLUMN_END_DATE, dateFormat.format(gameSession.getEndDate()));
+        if (gameSession.getStartDate() != null) {
+            values.put(COLUMN_START_DATE, dateFormat.format(gameSession.getStartDate()));
+        }
+        if (gameSession.getEndDate() != null) {
+            values.put(COLUMN_END_DATE, dateFormat.format(gameSession.getEndDate()));
+        }
         db.update(TABLE_NAME, values, "id = ?", new String[] {Integer.toString(gameSession.getId())});
     }
 
