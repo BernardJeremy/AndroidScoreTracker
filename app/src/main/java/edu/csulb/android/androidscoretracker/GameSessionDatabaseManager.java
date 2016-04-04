@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -64,7 +63,7 @@ public class GameSessionDatabaseManager {
         try {
             gameSession.setStartDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_START_DATE))));
             gameSession.setEndDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_END_DATE))));
-        } catch (ParseException e) {
+        } catch (Exception e) {
             Log.d("date-parser", "Fail to parse date : " + e.toString());
         }
         res.close();
@@ -89,7 +88,7 @@ public class GameSessionDatabaseManager {
         try {
             gameSession.setStartDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_START_DATE))));
             gameSession.setEndDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_END_DATE))));
-        } catch (ParseException e) {
+        } catch (Exception e) {
             Log.d("date-parser", "Fail to parse date : " + e.toString());
         }
         res.close();
@@ -119,7 +118,7 @@ public class GameSessionDatabaseManager {
             try {
                 gameSession.setStartDate((dateFormat.parse(startDate)));
                 gameSession.setEndDate((dateFormat.parse(endDate)));
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 Log.d("date-parser", "Fail to parse date : " + e.toString());
             }
             gameSessions.add(gameSession);

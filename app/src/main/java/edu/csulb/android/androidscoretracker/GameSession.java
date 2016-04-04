@@ -34,8 +34,8 @@ public class GameSession {
         this.nbWin = 0;
         this.nbLoose = 0;
         this.nbDraw = -1;
-        this.startDate = null;
-        this.endDate = null;
+        this.startDate = new Date();
+        this.endDate = new Date();
         this.isActive = true;
         this.comment = "";
     }
