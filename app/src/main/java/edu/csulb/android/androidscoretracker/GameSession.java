@@ -11,8 +11,10 @@ public class GameSession {
     private int nbDraw;
     private Date startDate;
     private Date endDate;
+    private boolean isActive;
+    private String comment;
 
-    public GameSession(int id, int gameId, String name, int nbWin, int nbLoose, int nbDraw, Date startDate, Date endDate) {
+    public GameSession(int id, int gameId, String name, int nbWin, int nbLoose, int nbDraw, Date startDate, Date endDate, Boolean isActive, String comment) {
         this.id = id;
         this.gameId = gameId;
         this.name = name;
@@ -21,6 +23,8 @@ public class GameSession {
         this.nbDraw = nbDraw;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isActive = isActive;
+        this.comment = comment;
     }
 
     public GameSession() {
@@ -32,6 +36,8 @@ public class GameSession {
         this.nbDraw = -1;
         this.startDate = null;
         this.endDate = null;
+        this.isActive = true;
+        this.comment = "";
     }
 
     public int getId() {
@@ -97,4 +103,21 @@ public class GameSession {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
+
+    public boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
 }

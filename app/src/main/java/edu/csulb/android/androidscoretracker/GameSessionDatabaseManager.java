@@ -24,6 +24,8 @@ public class GameSessionDatabaseManager {
     private final String COLUMN_NB_DRAW = "nbDraw";
     private final String COLUMN_START_DATE = "startDate";
     private final String COLUMN_END_DATE = "endDate";
+    private final String COLUMN_IS_ACTIVE = "isActive";
+    private final String COLUMN_COMMENT = "comment";
 
     public GameSessionDatabaseManager() {
         db = DatabaseManager.getInstance().getDb();
@@ -40,6 +42,8 @@ public class GameSessionDatabaseManager {
         values.put(COLUMN_NB_DRAW, gameSession.getNbDraw());
         values.put(COLUMN_START_DATE, (gameSession.getStartDate() == null ? null : dateFormat.format(gameSession.getStartDate())));
         values.put(COLUMN_END_DATE, (gameSession.getEndDate() == null ? null : dateFormat.format(gameSession.getEndDate())));
+        values.put(COLUMN_IS_ACTIVE, gameSession.getIsActive());
+        values.put(COLUMN_COMMENT, gameSession.getComment());
         db.insert(TABLE_NAME, null, values);
     }
 
@@ -55,6 +59,8 @@ public class GameSessionDatabaseManager {
         gameSession.setNbWin(res.getInt(res.getColumnIndex(COLUMN_NB_WIN)));
         gameSession.setNbLoose(res.getInt(res.getColumnIndex(COLUMN_NB_LOOSE)));
         gameSession.setNbDraw(res.getInt(res.getColumnIndex(COLUMN_NB_DRAW)));
+        gameSession.setIsActive(res.getInt(res.getColumnIndex(COLUMN_IS_ACTIVE)) == 1);
+        gameSession.setComment(res.getString(res.getColumnIndex(COLUMN_COMMENT)));
         try {
             gameSession.setStartDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_START_DATE))));
             gameSession.setEndDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_END_DATE))));
@@ -78,6 +84,8 @@ public class GameSessionDatabaseManager {
         gameSession.setNbWin(res.getInt(res.getColumnIndex(COLUMN_NB_WIN)));
         gameSession.setNbLoose(res.getInt(res.getColumnIndex(COLUMN_NB_LOOSE)));
         gameSession.setNbDraw(res.getInt(res.getColumnIndex(COLUMN_NB_DRAW)));
+        gameSession.setIsActive(res.getInt(res.getColumnIndex(COLUMN_IS_ACTIVE)) == 1);
+        gameSession.setComment(res.getString(res.getColumnIndex(COLUMN_COMMENT)));
         try {
             gameSession.setStartDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_START_DATE))));
             gameSession.setEndDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_END_DATE))));
@@ -106,6 +114,8 @@ public class GameSessionDatabaseManager {
             gameSession.setNbDraw(res.getInt(res.getColumnIndex(COLUMN_NB_DRAW)));
             String startDate = res.getString(res.getColumnIndex(COLUMN_START_DATE));
             String endDate = res.getString(res.getColumnIndex(COLUMN_END_DATE));
+            gameSession.setIsActive(res.getInt(res.getColumnIndex(COLUMN_IS_ACTIVE)) == 1);
+            gameSession.setComment(res.getString(res.getColumnIndex(COLUMN_COMMENT)));
             try {
                 gameSession.setStartDate((dateFormat.parse(startDate)));
                 gameSession.setEndDate((dateFormat.parse(endDate)));
@@ -137,6 +147,8 @@ public class GameSessionDatabaseManager {
             gameSession.setNbDraw(res.getInt(res.getColumnIndex(COLUMN_NB_DRAW)));
             String startDate = res.getString(res.getColumnIndex(COLUMN_START_DATE));
             String endDate = res.getString(res.getColumnIndex(COLUMN_END_DATE));
+            gameSession.setIsActive(res.getInt(res.getColumnIndex(COLUMN_IS_ACTIVE)) == 1);
+            gameSession.setComment(res.getString(res.getColumnIndex(COLUMN_COMMENT)));
             try {
                 gameSession.setStartDate((dateFormat.parse(startDate)));
                 gameSession.setEndDate((dateFormat.parse(endDate)));
@@ -159,6 +171,8 @@ public class GameSessionDatabaseManager {
         values.put(COLUMN_NB_WIN, gameSession.getNbWin());
         values.put(COLUMN_NB_LOOSE, gameSession.getNbLoose());
         values.put(COLUMN_NB_DRAW, gameSession.getNbDraw());
+        values.put(COLUMN_IS_ACTIVE, gameSession.getIsActive());
+        values.put(COLUMN_COMMENT, gameSession.getComment());
         if (gameSession.getStartDate() != null) {
             values.put(COLUMN_START_DATE, dateFormat.format(gameSession.getStartDate()));
         }

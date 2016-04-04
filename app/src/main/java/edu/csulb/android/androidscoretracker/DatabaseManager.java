@@ -11,7 +11,7 @@ public class DatabaseManager {
     private final String DATABASE_NAME = "ScoreTracker.db";
     private final String DATABASE_PATH = "/data/data/edu.csulb.android.androidscoretracker/";
     private final String CREATE_GAME_TABLE = "CREATE TABLE IF NOT EXISTS game(id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR);";
-    private final String CREATE_SESSION_TABLE = "CREATE TABLE IF NOT EXISTS gameSession(id INTEGER PRIMARY KEY AUTOINCREMENT, gameId INTEGER, name VARCHAR, nbWin INTEGER, nbLoose INTEGER, nbDraw INTEGER, startDate DATE, endDate DATE, FOREIGN KEY(gameId) REFERENCES game(gameId));";
+    private final String CREATE_SESSION_TABLE = "CREATE TABLE IF NOT EXISTS gameSession(id INTEGER PRIMARY KEY AUTOINCREMENT, gameId INTEGER, name VARCHAR, nbWin INTEGER, nbLoose INTEGER, nbDraw INTEGER, startDate DATE, endDate DATE, isActive BOOLEAN, comment VARCHAR, FOREIGN KEY(gameId) REFERENCES game(gameId));";
 
     //open or create the database, if it does not exist
     private DatabaseManager() {
