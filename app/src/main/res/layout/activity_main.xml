@@ -8,10 +8,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".LoadingActivity"
-    android:id="@+id/test">
+    android:id="@+id/main_activity">
 
-    <!--<fragment android:name="edu.csulb.android.androidscoretracker.Scoreboard"
-        android:id="@+id/scoreboard"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />-->
 </RelativeLayout>
