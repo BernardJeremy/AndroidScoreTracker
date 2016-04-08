@@ -1,16 +1,82 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
-    android:padding="6dip" >
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="10dp" >
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="fill_parent"
-        android:layout_height="26dip"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:ellipsize="marquee"
-        android:singleLine="true"
-        android:textSize="12sp" />
+    <LinearLayout
+        android:id="@+id/first_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false">
 
-</RelativeLayout> 
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight=".80"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/game_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:singleLine="true"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight=".80"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/scores_labels"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/second_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/first_line"
+        android:baselineAligned="false">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight=".80"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/session_name"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:singleLine="true"
+                android:textSize="16sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight=".80"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/scores_values"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -115,8 +115,10 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
         GameSession newGameSession = new GameSession();
         newGameSession.setName(sessionNameTxt.getText().toString());
         newGameSession.setGameId(dbGame.getGame(gameSpinner.getSelectedItem().toString()).getId());
-        if (this.gameSession != null && this.gameSession.getNbDraw() <= 0 || !hasDrawButton.isChecked()) {
+        if (this.gameSession == null) {
             newGameSession.setNbDraw(hasDrawButton.isChecked() ? 0 : -1);
+        } else if (this.gameSession.getNbDraw() < 0 && hasDrawButton.isChecked()) {
+            newGameSession.setNbDraw(0);
         }
 
         if (startDate.updated) {

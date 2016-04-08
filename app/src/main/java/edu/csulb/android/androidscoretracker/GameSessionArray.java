@@ -16,6 +16,8 @@ public class GameSessionArray extends ArrayAdapter<GameSession>{
     private final Context context;
     private final GameSession[] gameSessions;
 
+    private GameDatabaseManager dbGame = new GameDatabaseManager();
+
     public GameSessionArray(Context context, GameSession[] values) {
         super(context, -1, values);
         this.context = context;
@@ -27,8 +29,24 @@ public class GameSessionArray extends ArrayAdapter<GameSession>{
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.game_session_row, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.name);
-        textView.setText(gameSessions[position].getName());
+
+        TextView sessionNameText = (TextView) rowView.findViewById(R.id.session_name);
+        TextView gameNameText = (TextView) rowView.findViewById(R.id.game_name);
+        TextView scoresLabelsText = (TextView) rowView.findViewById(R.id.scores_labels);
+        TextView scoresValuesText = (TextView) rowView.findViewById(R.id.scores_values);
+
+        sessionNameText.setText(gameSessions[position].getName());
+        gameNameText.setText(dbGame.getGame(gameSessions[position].getGameId()).getName());
+        scoresLabelsText.setText(gameSessions[position].getNbDraw() >= 0 ? "W / D / L" : "W / L");
+
+        String scoreValues = String.valueOf(gameSessions[position].getNbWin()) + " / ";
+        if (gameSessions[position].getNbDraw() >= 0) {
+            scoreValues += gameSessions[position].getNbDraw() + " / ";
+        }
+        scoreValues += gameSessions[position].getNbLoose();
+
+        scoresValuesText.setText(scoreValues);
+
         return rowView;
     }
 

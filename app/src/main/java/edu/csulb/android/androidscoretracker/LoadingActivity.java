@@ -18,8 +18,8 @@ public class LoadingActivity extends FragmentActivity {
 	    //Scoreboard scoreboard = Scoreboard.newInstance(1);
         //getFragmentManager().beginTransaction().replace(R.id.main_activity, scoreboard).commit();
 
-        GameSessionListFragment fragmentS1 = new GameSessionListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.test, fragmentS1).commit();
+        GameSessionListFragment fragmentS1 = GameSessionListFragment.newInstance();
+        getFragmentManager().beginTransaction().replace(R.id.main_activity, fragmentS1).commit();
 
         //SQLiteDatabase.deleteDatabase(new File("/data/data/edu.csulb.android.androidscoretracker/ScoreTracker.db")); //-> to delete all the database
         //GameSessionDialog.showDialog(this);
