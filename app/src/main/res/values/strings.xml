@@ -14,4 +14,5 @@
     <string name="label_draw_button">Draws :</string>
     <string name="label_loose_button">Looses :</string>
     <string name="close_session">Close session</string>
+    <string name="current_session">Current Sessions</string>
 </resources>

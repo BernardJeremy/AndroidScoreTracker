@@ -1,11 +1,7 @@
 package edu.csulb.android.androidscoretracker;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import java.io.File;
 
 public class LoadingActivity extends FragmentActivity {
 
@@ -19,7 +15,7 @@ public class LoadingActivity extends FragmentActivity {
         dbSession = new GameSessionDatabaseManager();
         dbGame = new GameDatabaseManager();
 
-        Scoreboard fragmentS1 = Scoreboard.newInstance(1);
+        GameSessionListFragment fragmentS1 = new GameSessionListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.test, fragmentS1).commit();
 
 
