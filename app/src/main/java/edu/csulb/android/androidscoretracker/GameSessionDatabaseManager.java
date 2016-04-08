@@ -172,9 +172,11 @@ public class GameSessionDatabaseManager {
         values.put(COLUMN_NB_DRAW, gameSession.getNbDraw());
         values.put(COLUMN_IS_ACTIVE, gameSession.getIsActive());
         values.put(COLUMN_COMMENT, gameSession.getComment());
+        values.putNull(COLUMN_START_DATE);
         if (gameSession.getStartDate() != null) {
             values.put(COLUMN_START_DATE, dateFormat.format(gameSession.getStartDate()));
         }
+        values.putNull(COLUMN_END_DATE);
         if (gameSession.getEndDate() != null) {
             values.put(COLUMN_END_DATE, dateFormat.format(gameSession.getEndDate()));
         }
@@ -184,5 +186,9 @@ public class GameSessionDatabaseManager {
     //Delete a game from a database
     public void deleteGameSession(GameSession gameSession) {
         db.delete(TABLE_NAME, "id = ?", new String[]{Integer.toString(gameSession.getId())});
+    }
+
+    public SimpleDateFormat getDateFormat() {
+        return dateFormat;
     }
 }

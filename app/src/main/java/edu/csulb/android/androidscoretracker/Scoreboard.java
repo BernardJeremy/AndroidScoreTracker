@@ -63,22 +63,24 @@ public class Scoreboard extends Fragment {
         startDateLabelSpan.setSpan(new UnderlineSpan(), 0, startDateLabelSpan.length(), 0);
         startDateLabel.setText(startDateLabelSpan);
         TextView startDate = (TextView) view.findViewById(R.id.session_date_start);
-        startDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getStartDate()));
-
+        if (gameSession.getStartDate() != null) {
+            startDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getStartDate()));
+        }
         TextView endDateLabel = (TextView) view.findViewById(R.id.label_session_date_end);
         SpannableString endDateLabelSpan = new SpannableString("End date : ");
         endDateLabelSpan.setSpan(new UnderlineSpan(), 0, endDateLabelSpan.length(), 0);
         endDateLabel.setText(endDateLabelSpan);
         TextView endDate = (TextView) view.findViewById(R.id.session_date_end);
-        endDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getEndDate()));
-
-        Date dateEnd = gameSession.getEndDate();
-        Date dateNow = new Date();
-        String dateEndFormat = new SimpleDateFormat("MM-dd-yyyy").format(dateEnd);
-        String dateNowFormat = new SimpleDateFormat("MM-dd-yyyy").format(dateNow);
-        if (dateEndFormat.contentEquals(dateNowFormat) || dateEnd.before(dateNow)) {
-            gameSession.setIsActive(false);
-            dbSession.updateGameSession(gameSession);
+        if (gameSession.getEndDate() != null) {
+            endDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getEndDate()));
+            Date dateEnd = gameSession.getEndDate();
+            Date dateNow = new Date();
+            String dateEndFormat = new SimpleDateFormat("MM-dd-yyyy").format(dateEnd);
+            String dateNowFormat = new SimpleDateFormat("MM-dd-yyyy").format(dateNow);
+            if (dateEndFormat.contentEquals(dateNowFormat) || dateEnd.before(dateNow)) {
+                gameSession.setIsActive(false);
+                dbSession.updateGameSession(gameSession);
+            }
         }
 
         closeSessionButton = (Button) view.findViewById(R.id.close_session);

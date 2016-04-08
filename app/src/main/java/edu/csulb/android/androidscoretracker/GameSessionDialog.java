@@ -18,7 +18,9 @@ import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -38,6 +40,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
     private GameSession gameSession = null;
 
     private ArrayAdapter<String> gameNameAdapter;
+
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,8 +91,13 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
             gameSpinner.setSelection(gameNameAdapter.getPosition(
                     dbGame.getGame(gameSession.getId()).getName()));
             hasDrawButton.setChecked(gameSession.getNbDraw() != -1);
-            //startDate.setDate(gameSession.getStartDate().getTime(), true, true);
-            //endDate.setDate(gameSession.getEndDate().getTime(), true, true);
+
+            if (gameSession.getStartDate() != null) {
+                startDate.setText(dateFormat.format(gameSession.getStartDate()));
+            }
+            if (gameSession.getEndDate() != null) {
+                endDate.setText(dateFormat.format(gameSession.getEndDate()));
+            }
 
             addButton.setText(R.string.update);
         }
@@ -118,24 +127,28 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
 
     private GameSession buildGameSession() {
         GameSession newGameSession = new GameSession();
-        newGameSession.setName(sessionNameTxt.getText().toString());
-        newGameSession.setGameId(dbGame.getGame(gameSpinner.getSelectedItem().toString()).getId());
-        if (this.gameSession == null) {
-            newGameSession.setNbDraw(hasDrawButton.isChecked() ? 0 : -1);
-        } else if (this.gameSession.getNbDraw() < 0 && hasDrawButton.isChecked()) {
-            newGameSession.setNbDraw(0);
-        }
+        try {
+            newGameSession.setName(sessionNameTxt.getText().toString());
+            newGameSession.setGameId(dbGame.getGame(gameSpinner.getSelectedItem().toString()).getId());
+            if (this.gameSession == null) {
+                newGameSession.setNbDraw(hasDrawButton.isChecked() ? 0 : -1);
+            } else if (this.gameSession.getNbDraw() < 0 && hasDrawButton.isChecked()) {
+                newGameSession.setNbDraw(0);
+            }
 
-        /*if (startDate.updated) {
-            newGameSession.setStartDate(new GregorianCalendar(startDate.year, startDate.month, startDate.day).getTime());
-        } else if (this.gameSession != null) {
-            newGameSession.setStartDate(this.gameSession.getStartDate());
+            if (!startDate.getText().toString().isEmpty()) {
+                newGameSession.setStartDate(dateFormat.parse(startDate.getText().toString()));
+            } else {
+                newGameSession.setStartDate(new Date());
+            }
+            if (!endDate.getText().toString().isEmpty()) {
+                newGameSession.setEndDate(dateFormat.parse(endDate.getText().toString()));
+            } else {
+                newGameSession.setEndDate(null);
+            }
+        } catch (Exception e) {
+            Log.d("date-parser", "Fail to parse date : " + e.toString());
         }
-        if (endDate.updated) {
-            newGameSession.setEndDate(new GregorianCalendar(endDate.year, endDate.month, endDate.day).getTime());
-        } else if (this.gameSession != null) {
-            newGameSession.setEndDate(this.gameSession.getEndDate());
-        }*/
 
         return newGameSession;
     }
