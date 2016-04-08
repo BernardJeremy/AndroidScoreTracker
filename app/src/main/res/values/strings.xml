@@ -8,8 +8,8 @@
     <string name="add_game_session">Add Game Session</string>
     <string name="has_draw">Has draw</string>
     <string name="game_spinner_label">Choose a game</string>
-    <string name="start_date_label">Start date : </string>
-    <string name="end_date_label">End date : </string>
+    <string name="start_date_label">Start date</string>
+    <string name="end_date_label">End date</string>
     <string name="label_win_button">Wins :</string>
     <string name="label_draw_button">Draws :</string>
     <string name="label_loose_button">Looses :</string>

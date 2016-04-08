@@ -12,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Spinner;
@@ -28,8 +29,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
     private Button addButton;
     private Spinner gameSpinner;
     private CheckBox hasDrawButton;
-    private CalendarViewScrollable startDate;
-    private CalendarViewScrollable endDate;
+    private EditText startDate;
+    private EditText endDate;
 
     private static GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager();
     private static GameDatabaseManager dbGame = new GameDatabaseManager();
@@ -76,8 +77,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
 
         hasDrawButton = (CheckBox) view.findViewById(R.id.has_draw);
 
-        startDate = (CalendarViewScrollable) view.findViewById(R.id.start_date);
-        endDate = (CalendarViewScrollable) view.findViewById(R.id.end_date);
+        startDate = (EditText) view.findViewById(R.id.start_date);
+        endDate = (EditText) view.findViewById(R.id.end_date);
     }
 
     private void fillLayout() {
@@ -86,8 +87,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
             gameSpinner.setSelection(gameNameAdapter.getPosition(
                     dbGame.getGame(gameSession.getId()).getName()));
             hasDrawButton.setChecked(gameSession.getNbDraw() != -1);
-            startDate.setDate(gameSession.getStartDate().getTime(), true, true);
-            endDate.setDate(gameSession.getEndDate().getTime(), true, true);
+            //startDate.setDate(gameSession.getStartDate().getTime(), true, true);
+            //endDate.setDate(gameSession.getEndDate().getTime(), true, true);
 
             addButton.setText(R.string.update);
         }
@@ -101,14 +102,18 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
 
     @Override
     public void onClick(View view) {
-        GameSession newGameSession = this.buildGameSession();
-        if (gameSession == null) {
-            dbSession.addGameSession(newGameSession);
+        if (sessionNameTxt.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "Please enter a session name", Toast.LENGTH_LONG).show();
         } else {
-            newGameSession.setId(this.gameSession.getId());
-            dbSession.updateGameSession(newGameSession);
+            GameSession newGameSession = this.buildGameSession();
+            if (gameSession == null) {
+                dbSession.addGameSession(newGameSession);
+            } else {
+                newGameSession.setId(this.gameSession.getId());
+                dbSession.updateGameSession(newGameSession);
+            }
+            this.dismiss();
         }
-        this.dismiss();
     }
 
     private GameSession buildGameSession() {
@@ -121,7 +126,7 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
             newGameSession.setNbDraw(0);
         }
 
-        if (startDate.updated) {
+        /*if (startDate.updated) {
             newGameSession.setStartDate(new GregorianCalendar(startDate.year, startDate.month, startDate.day).getTime());
         } else if (this.gameSession != null) {
             newGameSession.setStartDate(this.gameSession.getStartDate());
@@ -130,7 +135,7 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
             newGameSession.setEndDate(new GregorianCalendar(endDate.year, endDate.month, endDate.day).getTime());
         } else if (this.gameSession != null) {
             newGameSession.setEndDate(this.gameSession.getEndDate());
-        }
+        }*/
 
         return newGameSession;
     }
