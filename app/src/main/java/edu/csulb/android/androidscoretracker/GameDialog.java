@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class GameDialog extends DialogFragment implements OnClickListener {
@@ -56,12 +57,17 @@ public class GameDialog extends DialogFragment implements OnClickListener {
     @Override
     public void onClick(View view) {
         String gameName = gameNameTxt.getText().toString();
-        if (game == null) {
-            dbGame.addGame(new Game(0, gameName, null));
+
+        if (gameName.isEmpty()) {
+            Toast.makeText(getActivity(), "Please enter a game name", Toast.LENGTH_LONG).show();
         } else {
-            dbGame.updateGame(new Game(this.game.getId(), gameName, null));
+            if (game == null) {
+                dbGame.addGame(new Game(0, gameName, null));
+            } else {
+                dbGame.updateGame(new Game(this.game.getId(), gameName, null));
+            }
+            this.dismiss();
         }
-        this.dismiss();
     }
 
     public static void showDialog(Activity context) {

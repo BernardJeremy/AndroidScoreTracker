@@ -14,6 +14,7 @@
             android:ems="10"
             android:hint="@string/game_session_name_hint"
             android:nextFocusDown="@+id/game_selector"
+            android:textColor="#fff"
             android:singleLine="true" />
 
         <TextView
