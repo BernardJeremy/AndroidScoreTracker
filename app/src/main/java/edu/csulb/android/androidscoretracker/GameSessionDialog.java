@@ -141,7 +141,7 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
             if (!startDate.getText().toString().isEmpty()) {
                 newGameSession.setStartDate(dateFormat.parse(startDate.getText().toString()));
             } else {
-                newGameSession.setStartDate(new Date());
+                newGameSession.setStartDate(gameSession != null ? gameSession.getStartDate() : new Date());
             }
             if (!endDate.getText().toString().isEmpty()) {
                 newGameSession.setEndDate(dateFormat.parse(endDate.getText().toString()));

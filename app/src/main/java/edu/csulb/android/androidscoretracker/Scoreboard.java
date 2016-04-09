@@ -66,12 +66,13 @@ public class Scoreboard extends Fragment {
         if (gameSession.getStartDate() != null) {
             startDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getStartDate()));
         }
-        TextView endDateLabel = (TextView) view.findViewById(R.id.label_session_date_end);
-        SpannableString endDateLabelSpan = new SpannableString("End date : ");
-        endDateLabelSpan.setSpan(new UnderlineSpan(), 0, endDateLabelSpan.length(), 0);
-        endDateLabel.setText(endDateLabelSpan);
         TextView endDate = (TextView) view.findViewById(R.id.session_date_end);
         if (gameSession.getEndDate() != null) {
+            TextView endDateLabel = (TextView) view.findViewById(R.id.label_session_date_end);
+            SpannableString endDateLabelSpan = new SpannableString("End date : ");
+            endDateLabelSpan.setSpan(new UnderlineSpan(), 0, endDateLabelSpan.length(), 0);
+            endDateLabel.setText(endDateLabelSpan);
+
             endDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getEndDate()));
             Date dateEnd = gameSession.getEndDate();
             Date dateNow = new Date();
@@ -151,6 +152,7 @@ public class Scoreboard extends Fragment {
     private View.OnClickListener closeSessionButtonClickListener = new View.OnClickListener() {
         public void onClick(View v){
             gameSession.setIsActive(false);
+            gameSession.setEndDate(new Date());
             dbSession.updateGameSession(gameSession);
         }
     };
