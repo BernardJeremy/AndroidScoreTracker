@@ -17,4 +17,7 @@
     <string name="current_session">Current Sessions</string>
     <string name="title_comment_dialog">Add a comment</string>
     <string name="cancel">Cancel</string>
+    <string name="session_list">"Session List"</string>
+    <string name="add_new_game">Add New Game</string>
+    <string name="add_new_session">Add New Session</string>
 </resources>

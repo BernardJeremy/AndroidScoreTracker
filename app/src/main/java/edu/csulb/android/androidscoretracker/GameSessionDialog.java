@@ -70,12 +70,12 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
         addButton.setOnClickListener(this);
 
         gameSpinner = (Spinner) view.findViewById(R.id.game_spinner);
-        List<String> gamesStringList = new ArrayList<String>();
+        List<String> gamesStringList = new ArrayList<>();
         ArrayList<Game> gamesList = dbGame.getAllGames();
         for(Game game: gamesList){
             gamesStringList.add(game.getName());
         }
-        gameNameAdapter = new ArrayAdapter<String>(view.getContext(),
+        gameNameAdapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_item, gamesStringList);
         gameSpinner.setAdapter(gameNameAdapter);
 
@@ -122,6 +122,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
                 dbSession.updateGameSession(newGameSession);
             }
             this.dismiss();
+            GameSessionListFragment fragmentS1 = GameSessionListFragment.newInstance();
+            getFragmentManager().beginTransaction().replace(R.id.main_activity, fragmentS1).commit();
         }
     }
 
