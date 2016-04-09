@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/dialog_comment">
+    android:padding="10dp">
 
     <EditText
         android:id="@+id/comment"
@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/radius_corner"
         android:layout_marginTop="10dp">
         <Button
             android:id="@+id/add"
@@ -23,7 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add"
             android:background="@color/blue"
-            android:layout_marginLeft="4dp"/>
+            android:layout_marginLeft="2dp"/>
         <Button
             android:id="@+id/cancel"
             android:layout_width="150dp"
