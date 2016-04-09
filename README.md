@@ -9,3 +9,8 @@ Android app allowing to track the score of any kind and any number of games/spor
 - Menu : Scrolling menu made to navigate between game and to create games and sessions. (1 days)
 - Game sessions list : ListView created to choose a game session. (1 day)
 - Game & Game session creation. (1 day)
+
+Authors:
+Claire Almozinos : 014930667
+Jeremy Bernard : 014930732
+Aurélien Gilliouard : 014930797
