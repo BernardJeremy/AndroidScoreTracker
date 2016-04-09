@@ -10,7 +10,6 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/game_session_name_hint"
-            android:textColor="#fff"
             android:singleLine="true" />
 
     <Button
