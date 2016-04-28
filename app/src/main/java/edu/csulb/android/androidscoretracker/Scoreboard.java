@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +131,20 @@ public class Scoreboard extends Fragment {
             gameSession.setNbWin(gameSession.getNbWin() + 1);
             dbSession.updateGameSession(gameSession);
             winButton.setText(String.valueOf(gameSession.getNbWin()));
+
+            ///////////////////////////////
+            // EXAMPLE OF HISTORY FROM DB//
+            ///////////////////////////////
+            SessionHistoryDatabaseManager dbHistory = new SessionHistoryDatabaseManager();
+            dbHistory.addHistory(new SessionHistory(0, gameSession.getId(), SessionHistory.TYPE_WIN, "GG", new Date()));
+            SessionHistory history = dbHistory.getAllHistory(gameSession.getId()).get(dbHistory.getAllHistory(gameSession.getId()).size() - 1);
+            Log.d("HISTORY", "ID : " + history.getId());
+            Log.d("HISTORY", "COMMENT : " + history.getComment());
+            Log.d("HISTORY", "TYPE : " + history.getType());
+            Log.d("HISTORY", "DATE : " + history.getDate().toString());
+            ///////////////////////////////
+            //      END OF EXAMPLE       //
+            ///////////////////////////////
         }
     }
 
