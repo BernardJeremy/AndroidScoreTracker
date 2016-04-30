@@ -18,7 +18,7 @@ public class GameDatabaseManager {
 
     public GameDatabaseManager () {
         db = DatabaseManager.getInstance().getDb();
-        dbSession = new GameSessionDatabaseManager();
+        dbSession = new GameSessionDatabaseManager(this);
     }
 
     //add a game in the database

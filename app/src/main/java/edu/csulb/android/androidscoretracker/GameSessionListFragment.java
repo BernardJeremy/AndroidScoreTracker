@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class GameSessionListFragment extends ListFragment {
 
     private GameSession[] gameSessions;
-    private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager();
+    private GameDatabaseManager dbGame = new GameDatabaseManager();
+    private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager(dbGame);
     private String selectedGameName = null;
 
     public static GameSessionListFragment newInstance() {
@@ -34,11 +35,11 @@ public class GameSessionListFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ArrayList<GameSession> gameSessions;
-        //if (this.selectedGameName != null) {
-            //gameSessions = dbSession.getAllGameSessionsFromGameName(selectedGameName);
-        //} else {
+        if (this.selectedGameName != null) {
+            gameSessions = dbSession.getAllGameSessionsFromGameName(selectedGameName);
+        } else {
             gameSessions = dbSession.getAllGameSessions(true);
-        //}
+        }
         this.gameSessions = gameSessions.toArray(new GameSession[gameSessions.size()]);
         GameSessionArray adapter = new GameSessionArray(getActivity(), this.gameSessions);
         setListAdapter(adapter);

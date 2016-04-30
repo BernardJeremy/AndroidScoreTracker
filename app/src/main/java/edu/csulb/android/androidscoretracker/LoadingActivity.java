@@ -31,8 +31,8 @@ public class LoadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbSession = new GameSessionDatabaseManager();
         dbGame = new GameDatabaseManager();
+        dbSession = new GameSessionDatabaseManager(dbGame);
 
         toolbar = (Toolbar) findViewById(R.id.customToolbar);
         toolbar.setTitleTextColor(0xFFFFFFFF);

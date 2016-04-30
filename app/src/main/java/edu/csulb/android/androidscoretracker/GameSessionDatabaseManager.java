@@ -28,9 +28,9 @@ public class GameSessionDatabaseManager {
     private final String COLUMN_IS_ACTIVE = "isActive";
     private final String COLUMN_COMMENT = "comment";
 
-    public GameSessionDatabaseManager() {
+    public GameSessionDatabaseManager(GameDatabaseManager dbGame) {
         db = DatabaseManager.getInstance().getDb();
-        dbGame = new GameDatabaseManager();
+        this.dbGame = dbGame;
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
 
