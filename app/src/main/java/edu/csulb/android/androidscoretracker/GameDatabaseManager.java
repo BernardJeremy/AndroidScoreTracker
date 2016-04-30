@@ -65,6 +65,19 @@ public class GameDatabaseManager {
         return count;
     }
 
+    public Game getLastGame() {
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " order by " + COLUMN_ID + " DESC LIMIT 1;", null);
+        res.moveToFirst();
+
+        Game game = new Game();
+        game.setId(res.getInt(res.getColumnIndex(COLUMN_ID)));
+        game.setName(res.getString(res.getColumnIndex(COLUMN_NAME)));
+        game.setSessions(dbSession.getAllGameSessionsFromGameId(game.getId()));
+        res.close();
+
+        return game;
+    }
+
     //Get all games from the database
     public ArrayList<Game> getAllGames() {
         ArrayList<Game> games = new ArrayList<>();

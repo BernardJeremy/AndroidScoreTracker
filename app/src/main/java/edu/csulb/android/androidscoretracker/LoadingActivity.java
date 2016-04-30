@@ -1,5 +1,6 @@
 package edu.csulb.android.androidscoretracker;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,6 +21,9 @@ public class LoadingActivity extends AppCompatActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout drawerLayout;
     private ListView listMenu;
+    private GameDatabaseManager gameDb = new GameDatabaseManager();
+    private ArrayList<NavigationItem> itemsList;
+    private MenuListAdapter menuAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +41,17 @@ public class LoadingActivity extends AppCompatActivity {
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name,R.string.app_name);
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
-
+        ArrayList<Game> gameList = gameDb.getAllGames();
+        itemsList = new ArrayList<>();
+        itemsList.add(new NavigationItem(getString(R.string.session_list), R.mipmap.ic_list_black));
+        itemsList.add(new NavigationItem(getString(R.string.add_new_game), R.mipmap.ic_add_circle_outline_black));
+        itemsList.add(new NavigationItem(getString(R.string.add_new_session), R.mipmap.ic_add_circle_outline_black));
+        for (Game game : gameList) {
+            itemsList.add(new NavigationItem(game.getName(), R.mipmap.ic_games_black));
+        }
         listMenu = (ListView)findViewById(R.id.left_drawer);
-        ArrayList<NavigationItem> list = new ArrayList<>();
-        list.add(new NavigationItem(getString(R.string.session_list), R.mipmap.ic_list_black));
-        list.add(new NavigationItem(getString(R.string.add_new_game), R.mipmap.ic_add_circle_outline_black));
-        list.add(new NavigationItem(getString(R.string.add_new_session), R.mipmap.ic_add_circle_outline_black));
-        listMenu.setAdapter(new MenuListAdapter(getApplicationContext(), list));
+        menuAdapter = new MenuListAdapter(getApplicationContext(), itemsList);
+        listMenu.setAdapter(menuAdapter);
         listMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -51,7 +59,7 @@ public class LoadingActivity extends AppCompatActivity {
                     case 0:
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         GameSessionListFragment fragmentS1 = GameSessionListFragment.newInstance();
-                        getFragmentManager().beginTransaction().replace(R.id.main_activity, fragmentS1).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.main_activity, fragmentS1).addToBackStack(null).commit();
                         break;
                     case 1:
                         drawerLayout.closeDrawer(Gravity.LEFT);
@@ -61,13 +69,36 @@ public class LoadingActivity extends AppCompatActivity {
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         GameSessionDialog.showDialog(LoadingActivity.this);
                         break;
+                    default:
+                        //open the new fragment here
+                        //you should use the gameDb object directly here to get your game object and send it to your fragment
+                        //If you do it, you will not have to recreate a new DatabaseManager object and it is more optimized this way
+                        //Game chosenGame = gameDb.getGame(itemsList.get(position).getTitle());  Get your game object to send to your fragment
+                        break;
                 }
             }
         });
 
         GameSessionListFragment fragmentS1 = GameSessionListFragment.newInstance();
-        getFragmentManager().beginTransaction().replace(R.id.main_activity, fragmentS1).commit();
+        getFragmentManager().beginTransaction().add(R.id.main_activity, fragmentS1).addToBackStack(null).commit();
 
         //SQLiteDatabase.deleteDatabase(new File("/data/data/edu.csulb.android.androidscoretracker/ScoreTracker.db")); //-> to delete all the database
+    }
+
+    public void updateNavigationDrawer() {
+        Game lastGame = gameDb.getLastGame();
+        itemsList.add(new NavigationItem(lastGame.getName(), R.mipmap.ic_games_black));
+        menuAdapter.setNewData(itemsList);
+        menuAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed(){
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 1) {
+            fm.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

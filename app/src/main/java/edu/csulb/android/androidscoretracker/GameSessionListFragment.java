@@ -35,6 +35,6 @@ public class GameSessionListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         Scoreboard scoreboard = Scoreboard.newInstance(this.gameSessions[position].getId());
-        getFragmentManager().beginTransaction().replace(R.id.main_activity, scoreboard).commit();
+        getFragmentManager().beginTransaction().replace(R.id.main_activity, scoreboard).addToBackStack(null).commit();
     }
 }
