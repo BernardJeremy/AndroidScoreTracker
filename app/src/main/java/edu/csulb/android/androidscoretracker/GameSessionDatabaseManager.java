@@ -7,10 +7,12 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GameSessionDatabaseManager {
 
     private SQLiteDatabase db;
+    private GameDatabaseManager dbGame;
 
     private SimpleDateFormat dateFormat;
 
@@ -28,6 +30,7 @@ public class GameSessionDatabaseManager {
 
     public GameSessionDatabaseManager() {
         db = DatabaseManager.getInstance().getDb();
+        dbGame = new GameDatabaseManager();
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
 
@@ -98,9 +101,17 @@ public class GameSessionDatabaseManager {
 
     //Get all games from the database
     public ArrayList<GameSession> getAllGameSessions() {
-        ArrayList<GameSession> gameSessions = new ArrayList<>();
+        return getAllGameSessions(false);
+    }
 
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME + ";", null);
+    //Get all games from the database
+    public ArrayList<GameSession> getAllGameSessions(boolean isActive) {
+        ArrayList<GameSession> gameSessions = new ArrayList<>();
+        String whereClause = "1 = 1";
+        if (isActive) {
+            whereClause  = COLUMN_IS_ACTIVE + " = 1";
+        }
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " WHERE " + whereClause + ";", null);
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -121,12 +132,22 @@ public class GameSessionDatabaseManager {
             } catch (Exception e) {
                 Log.d("date-parser", "Fail to parse date : " + e.toString());
             }
-            gameSessions.add(gameSession);
+            Date toomorow = new Date();
+            toomorow.setTime(toomorow.getTime() + 86400000);
+            if (gameSession.getStartDate().before(toomorow)) {
+                if (gameSession.getEndDate() == null || (gameSession.getEndDate() != null && gameSession.getEndDate().after(new Date())))
+                gameSessions.add(gameSession);
+            }
             res.moveToNext();
         }
         res.close();
 
         return gameSessions;
+    }
+
+    //Get all games from the database with a given game name
+    public ArrayList<GameSession> getAllGameSessionsFromGameName(String gameName) {
+        return this.getAllGameSessionsFromGameId(dbGame.getGame(gameName).getId());
     }
 
     //Get all games from the database with a given gameId

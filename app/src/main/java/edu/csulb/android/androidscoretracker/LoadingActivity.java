@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -73,7 +74,10 @@ public class LoadingActivity extends AppCompatActivity {
                         //open the new fragment here
                         //you should use the gameDb object directly here to get your game object and send it to your fragment
                         //If you do it, you will not have to recreate a new DatabaseManager object and it is more optimized this way
-                        //Game chosenGame = gameDb.getGame(itemsList.get(position).getTitle());  Get your game object to send to your fragment
+                        Game chosenGame = gameDb.getGame(itemsList.get(position).getTitle());
+                        drawerLayout.closeDrawer(Gravity.LEFT);
+                        GameSessionListFragment fragmentS2 = GameSessionListFragment.newInstance(chosenGame.getName());
+                        getFragmentManager().beginTransaction().replace(R.id.main_activity, fragmentS2).addToBackStack(null).commit();
                         break;
                 }
             }

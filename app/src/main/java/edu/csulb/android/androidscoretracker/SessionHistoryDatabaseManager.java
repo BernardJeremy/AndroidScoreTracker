@@ -60,7 +60,6 @@ public class SessionHistoryDatabaseManager {
             try {
                 history.setDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_DATE))));
             } catch (Exception e) {
-                Log.d("date-parser", "Fail to parse date : " + e.toString());
             }
             histories.add(history);
             res.moveToNext();
