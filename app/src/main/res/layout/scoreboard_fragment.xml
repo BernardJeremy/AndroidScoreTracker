@@ -87,6 +87,14 @@
             android:layout_marginLeft="10dp"
             android:textStyle="bold"
             android:textSize="20dp"/>
+        <ImageButton
+            android:id="@+id/minus_win"
+            android:background="@android:color/transparent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_minus_circle"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"/>
 
     </LinearLayout>
 
@@ -114,6 +122,15 @@
             android:textStyle="bold"
             android:textSize="20dp"/>
 
+        <ImageButton
+            android:id="@+id/minus_draw"
+            android:background="@android:color/transparent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_minus_circle"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -136,6 +153,14 @@
             android:textStyle="bold"
             android:textSize="20dp"/>
 
+        <ImageButton
+            android:id="@+id/minus_loose"
+            android:background="@android:color/transparent"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/ic_minus_circle"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"/>
     </LinearLayout>
 
     <LinearLayout

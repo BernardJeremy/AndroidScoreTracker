@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +27,9 @@ public class Scoreboard extends Fragment {
     private Button winButton;
     private Button drawButton;
     private Button looseButton;
+    private ImageButton winMinusButton;
+    private ImageButton drawMinusButton;
+    private ImageButton looseMinusButton;
 
     private GameDatabaseManager dbGame = new GameDatabaseManager();
     private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager(dbGame);
@@ -71,6 +76,7 @@ public class Scoreboard extends Fragment {
         setupWin();
         setupDraw();
         setupLooseButton();
+        setupMinusButtons();
 
         return view;
     }
@@ -153,6 +159,9 @@ public class Scoreboard extends Fragment {
             gameSession.setIsActive(false);
             gameSession.setEndDate(new Date());
             dbSession.updateGameSession(gameSession);
+            closeSessionButton.setVisibility(View.GONE);
+            setupEndDate();
+            Toast.makeText(getActivity(), "You just closed your session", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -167,32 +176,34 @@ public class Scoreboard extends Fragment {
         winButton.setOnLongClickListener(winButtonLongClickListener);
     }
 
-    private void updateWin() {
+    private void addWin() {
         if (gameSession.getIsActive()) {
             gameSession.setNbWin(gameSession.getNbWin() + 1);
             dbSession.updateGameSession(gameSession);
             winButton.setText(String.valueOf(gameSession.getNbWin()));
             createSessionHistory(SessionHistory.TYPE_WIN);
+        } else {
+            Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Listener click for win button
     private View.OnClickListener winButtonClickListener = new View.OnClickListener(){
         public void onClick(View v){
-            updateWin();
+            addWin();
         }
     };
 
     // Listener long click for win button
     private View.OnLongClickListener winButtonLongClickListener = new View.OnLongClickListener() {
         public boolean onLongClick(View v) {
-            if (gameSession.getIsActive()) {
-                ScoreboardCommentDialog dialog = ScoreboardCommentDialog.newInstance();
-                dialog.setTargetFragment(Scoreboard.this, COMMENT);
-                dialog.show(getFragmentManager(), "Scoreboard comment");
-                updateWin();
-            }
-            return true;
+        if (gameSession.getIsActive()) {
+            ScoreboardCommentDialog dialog = ScoreboardCommentDialog.newInstance();
+            dialog.setTargetFragment(Scoreboard.this, COMMENT);
+            dialog.show(getFragmentManager(), "Scoreboard comment");
+            addWin();
+        }
+        return true;
         }
     };
 
@@ -213,32 +224,34 @@ public class Scoreboard extends Fragment {
         }
     }
 
-    private void updateDraw() {
+    private void addDraw() {
         if (gameSession.getIsActive()) {
             gameSession.setNbDraw(gameSession.getNbDraw() + 1);
             dbSession.updateGameSession(gameSession);
             drawButton.setText(String.valueOf(gameSession.getNbDraw()));
             createSessionHistory(SessionHistory.TYPE_DRAW);
+        } else {
+            Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Listener click for draw button
     private View.OnClickListener drawButtonClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            updateDraw();
+            addDraw();
         }
     };
 
     // Listener long click for draw button
     private View.OnLongClickListener drawButtonLongClickListener = new View.OnLongClickListener() {
         public boolean onLongClick(View v) {
-            if (gameSession.getIsActive()) {
-                ScoreboardCommentDialog dialog = ScoreboardCommentDialog.newInstance();
-                dialog.setTargetFragment(Scoreboard.this, COMMENT);
-                dialog.show(getFragmentManager(), "Scoreboard comment");
-                updateDraw();
-            }
-            return true;
+        if (gameSession.getIsActive()) {
+            ScoreboardCommentDialog dialog = ScoreboardCommentDialog.newInstance();
+            dialog.setTargetFragment(Scoreboard.this, COMMENT);
+            dialog.show(getFragmentManager(), "Scoreboard comment");
+            addDraw();
+        }
+        return true;
         }
     };
 
@@ -254,19 +267,21 @@ public class Scoreboard extends Fragment {
 
     }
 
-    private void updateLoose() {
+    private void addLoose() {
         if (gameSession.getIsActive()) {
             gameSession.setNbLoose(gameSession.getNbLoose() + 1);
             dbSession.updateGameSession(gameSession);
             looseButton.setText(String.valueOf(gameSession.getNbLoose()));
             createSessionHistory(SessionHistory.TYPE_LOOSE);
+        } else {
+            Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
         }
     }
 
     // Listener click for loose button
     private View.OnClickListener looseButtonClickListener = new View.OnClickListener() {
         public void onClick(View v) {
-            updateLoose();
+            addLoose();
         }
     };
 
@@ -277,9 +292,91 @@ public class Scoreboard extends Fragment {
                 ScoreboardCommentDialog dialog = ScoreboardCommentDialog.newInstance();
                 dialog.setTargetFragment(Scoreboard.this, COMMENT);
                 dialog.show(getFragmentManager(), "Scoreboard comment");
-                updateLoose();
+                addLoose();
             }
             return true;
+        }
+    };
+
+    /*********************************/
+    /**********Minus BUTTONS*********/
+    /*******************************/
+
+    private void setupMinusButtons() {
+        winMinusButton = (ImageButton) view.findViewById(R.id.minus_win);
+        winMinusButton.setOnClickListener(winMinusButtonClickListener);
+        drawMinusButton = (ImageButton) view.findViewById(R.id.minus_draw);
+        drawMinusButton.setOnClickListener(drawMinusButtonClickListener);
+        looseMinusButton = (ImageButton) view.findViewById(R.id.minus_loose);
+        looseMinusButton.setOnClickListener(looseMinusButtonClickListener);
+    }
+
+    /*********************************/
+    /********Minus WIN BUTTONS*******/
+    /*******************************/
+
+    private void removeWin() {
+        if (gameSession.getIsActive()) {
+            if (gameSession.getNbWin() > 0) {
+                gameSession.setNbWin(gameSession.getNbWin() - 1);
+                dbSession.updateGameSession(gameSession);
+                winButton.setText(String.valueOf(gameSession.getNbWin()));
+            }
+        } else {
+            Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private View.OnClickListener winMinusButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            removeWin();
+        }
+    };
+
+    /*********************************/
+    /*******Minus DRAW BUTTONS*******/
+    /*******************************/
+
+    private void removeDraw() {
+        if (gameSession.getIsActive()) {
+            if (gameSession.getNbDraw() > 0) {
+                gameSession.setNbDraw(gameSession.getNbDraw() - 1);
+                dbSession.updateGameSession(gameSession);
+                drawButton.setText(String.valueOf(gameSession.getNbDraw()));
+            }
+        } else {
+            Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private View.OnClickListener drawMinusButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            removeDraw();
+        }
+    };
+
+    /*********************************/
+    /*******Minus LOOSE BUTTONS******/
+    /*******************************/
+
+    private void removeLoose() {
+        if (gameSession.getIsActive()) {
+            if (gameSession.getNbLoose() > 0) {
+                gameSession.setNbLoose(gameSession.getNbLoose() - 1);
+                dbSession.updateGameSession(gameSession);
+                looseButton.setText(String.valueOf(gameSession.getNbLoose()));
+            }
+        } else {
+            Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private View.OnClickListener looseMinusButtonClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            removeLoose();
         }
     };
 }
