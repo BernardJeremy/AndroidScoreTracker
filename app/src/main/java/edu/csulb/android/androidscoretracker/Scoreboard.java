@@ -28,6 +28,8 @@ public class Scoreboard extends Fragment {
     private GameDatabaseManager dbGame = new GameDatabaseManager();
     private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager();
     private GameSession gameSession;
+    private SessionHistoryDatabaseManager dbHistory = new SessionHistoryDatabaseManager();
+    private SessionHistory sessionHistory;
 
     public static Scoreboard newInstance(int idSession) {
         Scoreboard scoreboard = new Scoreboard();
@@ -121,8 +123,13 @@ public class Scoreboard extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (resultCode == COMMENT) {
-            gameSession.setComment(data.getExtras().get("Comment").toString());
-            dbSession.updateGameSession(gameSession);
+            sessionHistory.setComment(data.getExtras().get("Comment").toString());
+            dbHistory.updateHistorySession(sessionHistory);
+            SessionHistory history = dbHistory.getAllHistory(gameSession.getId()).get(dbHistory.getAllHistory(gameSession.getId()).size() - 1);
+            Log.d("HISTORY", "ID : " + history.getId());
+            Log.d("HISTORY", "COMMENT : " + history.getComment());
+            Log.d("HISTORY", "TYPE : " + history.getType());
+            Log.d("HISTORY", "DATE : " + history.getDate().toString());
         }
     }
 
@@ -131,20 +138,7 @@ public class Scoreboard extends Fragment {
             gameSession.setNbWin(gameSession.getNbWin() + 1);
             dbSession.updateGameSession(gameSession);
             winButton.setText(String.valueOf(gameSession.getNbWin()));
-
-            ///////////////////////////////
-            // EXAMPLE OF HISTORY FROM DB//
-            ///////////////////////////////
-            SessionHistoryDatabaseManager dbHistory = new SessionHistoryDatabaseManager();
-            dbHistory.addHistory(new SessionHistory(0, gameSession.getId(), SessionHistory.TYPE_WIN, "GG", new Date()));
-            SessionHistory history = dbHistory.getAllHistory(gameSession.getId()).get(dbHistory.getAllHistory(gameSession.getId()).size() - 1);
-            Log.d("HISTORY", "ID : " + history.getId());
-            Log.d("HISTORY", "COMMENT : " + history.getComment());
-            Log.d("HISTORY", "TYPE : " + history.getType());
-            Log.d("HISTORY", "DATE : " + history.getDate().toString());
-            ///////////////////////////////
-            //      END OF EXAMPLE       //
-            ///////////////////////////////
+            createSessionHistory(SessionHistory.TYPE_WIN);
         }
     }
 
@@ -153,6 +147,7 @@ public class Scoreboard extends Fragment {
             gameSession.setNbDraw(gameSession.getNbDraw() + 1);
             dbSession.updateGameSession(gameSession);
             drawButton.setText(String.valueOf(gameSession.getNbDraw()));
+            createSessionHistory(SessionHistory.TYPE_DRAW);
         }
     }
 
@@ -161,7 +156,20 @@ public class Scoreboard extends Fragment {
             gameSession.setNbLoose(gameSession.getNbLoose() + 1);
             dbSession.updateGameSession(gameSession);
             looseButton.setText(String.valueOf(gameSession.getNbLoose()));
+            createSessionHistory(SessionHistory.TYPE_LOOSE);
         }
+    }
+
+    private void createSessionHistory(int sessionType) {
+        sessionHistory = new SessionHistory(0, gameSession.getId(), sessionType, "");
+        dbHistory.addHistory(sessionHistory);
+
+
+        SessionHistory history = dbHistory.getAllHistory(gameSession.getId()).get(dbHistory.getAllHistory(gameSession.getId()).size() - 1);
+        Log.d("HISTORY", "ID : " + history.getId());
+        Log.d("HISTORY", "COMMENT : " + history.getComment());
+        Log.d("HISTORY", "TYPE : " + history.getType());
+        Log.d("HISTORY", "DATE : " + history.getDate().toString());
     }
 
     private View.OnClickListener closeSessionButtonClickListener = new View.OnClickListener() {

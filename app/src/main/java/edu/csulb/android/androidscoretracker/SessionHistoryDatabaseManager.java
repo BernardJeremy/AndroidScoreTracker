@@ -74,4 +74,13 @@ public class SessionHistoryDatabaseManager {
     public void deleteHistory(SessionHistory history) {
         db.delete(TABLE_NAME, "id = ?", new String[]{Integer.toString(history.getId())});
     }
+
+    //Update a history in the database
+    public void updateHistorySession(SessionHistory history) {
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_COMMENT, history.getComment());
+        values.put(COLUMN_TYPE, history.getType());
+        values.put(COLUMN_DATE, dateFormat.format(history.getDate()));
+        db.update(TABLE_NAME, values, "id = ?", new String[] {Integer.toString(history.getId())});
+    }
 }
