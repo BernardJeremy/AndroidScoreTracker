@@ -4,8 +4,21 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/history_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="test"/>
+        android:text="@string/history_title"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"/>
+
+    <ListView
+        android:id="@+id/history_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+    </ListView>
 
 </LinearLayout>

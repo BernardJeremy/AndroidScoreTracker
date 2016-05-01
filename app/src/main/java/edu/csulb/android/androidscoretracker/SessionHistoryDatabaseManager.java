@@ -3,7 +3,6 @@ package edu.csulb.android.androidscoretracker;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,13 +25,24 @@ public class SessionHistoryDatabaseManager {
     }
 
     //add an history in the database
-    public void addHistory(SessionHistory history) {
+    public int addHistory(SessionHistory history) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_SESSION_ID, history.getSessionId());
         values.put(COLUMN_COMMENT, history.getComment());
         values.put(COLUMN_TYPE, history.getType());
         values.put(COLUMN_DATE, dateFormat.format(history.getDate()));
         db.insert(TABLE_NAME, null, values);
+
+        return this.getLastHistoryId();
+    }
+
+    public int getLastHistoryId() {
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " order by " + COLUMN_ID + " DESC LIMIT 1;", null);
+        res.moveToFirst();
+        int ret = res.getInt(res.getColumnIndex(COLUMN_ID));
+        res.close();
+
+        return ret;
     }
 
     public int countHistory(int sessionId) {
@@ -47,8 +57,7 @@ public class SessionHistoryDatabaseManager {
     //Get all history from the database
     public ArrayList<SessionHistory> getAllHistory(int sessionId) {
         ArrayList<SessionHistory> histories = new ArrayList<>();
-
-        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_SESSION_ID + " = '" + sessionId + "';", null);
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where " + COLUMN_SESSION_ID + " = '" + sessionId + "' order by " + COLUMN_DATE + " desc;", null);
         res.moveToFirst();
 
         while(!res.isAfterLast()){
@@ -69,12 +78,12 @@ public class SessionHistoryDatabaseManager {
         return histories;
     }
 
-    //Delete an history from a database
+    //Delete an history session from a database
     public void deleteHistory(SessionHistory history) {
         db.delete(TABLE_NAME, "id = ?", new String[]{Integer.toString(history.getId())});
     }
 
-    //Update a history in the database
+    //Update a history session in the database
     public void updateHistorySession(SessionHistory history) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_COMMENT, history.getComment());

@@ -1,11 +1,12 @@
 package edu.csulb.android.androidscoretracker;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class Scoreboard extends Fragment {
     private GameSession gameSession;
     private SessionHistoryDatabaseManager dbHistory = new SessionHistoryDatabaseManager();
     private SessionHistory sessionHistory;
+    private HistorySessionList historyFragment;
 
     public static Scoreboard newInstance(int idSession) {
         Scoreboard scoreboard = new Scoreboard();
@@ -51,6 +53,7 @@ public class Scoreboard extends Fragment {
 
         Integer idSession = getArguments().getInt("idSession");
         gameSession = dbSession.getGameSession(idSession);
+
         Game game = dbGame.getGame(gameSession.getGameId());
 
         TextView gameName = (TextView) view.findViewById(R.id.scoreboard_game_name);
@@ -61,6 +64,28 @@ public class Scoreboard extends Fragment {
         TextView sessionName = (TextView) view.findViewById(R.id.scoreboard_session_name);
         sessionName.setText(gameSession.getName());
 
+        setupHistoryFragment();
+        setupStartDate();
+        setupEndDate();
+        setupCloseSessionButton();
+        setupWin();
+        setupDraw();
+        setupLooseButton();
+
+        return view;
+    }
+
+    private void setupHistoryFragment() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        fm.beginTransaction();
+        historyFragment = HistorySessionList.newInstance(gameSession.getId());
+        ft.add(R.id.history_fragment, historyFragment);
+        ft.commit();
+    }
+
+    private void setupStartDate() {
         TextView startDateLabel = (TextView) view.findViewById(R.id.label_session_date_start);
         SpannableString startDateLabelSpan = new SpannableString("Start date : ");
         startDateLabelSpan.setSpan(new UnderlineSpan(), 0, startDateLabelSpan.length(), 0);
@@ -69,6 +94,9 @@ public class Scoreboard extends Fragment {
         if (gameSession.getStartDate() != null) {
             startDate.setText(new SimpleDateFormat("MM-dd-yyyy").format(gameSession.getStartDate()));
         }
+    }
+
+    private void setupEndDate() {
         TextView endDate = (TextView) view.findViewById(R.id.session_date_end);
         if (gameSession.getEndDate() != null) {
             TextView endDateLabel = (TextView) view.findViewById(R.id.label_session_date_end);
@@ -86,36 +114,6 @@ public class Scoreboard extends Fragment {
                 dbSession.updateGameSession(gameSession);
             }
         }
-
-        closeSessionButton = (Button) view.findViewById(R.id.close_session);
-        if (gameSession.getIsActive()) {
-            closeSessionButton.setOnClickListener(closeSessionButtonClickListener);
-        } else {
-            closeSessionButton.setVisibility(View.GONE);
-        }
-
-        winButton = (Button) view.findViewById(R.id.win_score_button);
-        winButton.setText(String.valueOf(gameSession.getNbWin()));
-        winButton.setOnClickListener(winButtonClickListener);
-        winButton.setOnLongClickListener(winButtonLongClickListener);
-
-        drawButton = (Button) view.findViewById(R.id.draw_score_button);
-        if (gameSession.getNbDraw() > -1) {
-            drawButton.setText(String.valueOf(gameSession.getNbDraw()));
-            drawButton.setOnClickListener(drawButtonClickListener);
-            drawButton.setOnLongClickListener(drawButtonLongClickListener);
-        } else {
-            TextView drawTitleButton = (TextView) view.findViewById(R.id.title_draw);
-            drawTitleButton.setVisibility(View.GONE);
-            drawButton.setVisibility(View.GONE);
-        }
-
-        looseButton = (Button) view.findViewById(R.id.loose_score_button);
-        looseButton.setText(String.valueOf(gameSession.getNbLoose()));
-        looseButton.setOnClickListener(looseButtonClickListener);
-        looseButton.setOnLongClickListener(looseButtonLongClickListener);
-
-        return view;
     }
 
     // Result of Comment Dialog
@@ -125,12 +123,48 @@ public class Scoreboard extends Fragment {
         if (resultCode == COMMENT) {
             sessionHistory.setComment(data.getExtras().get("Comment").toString());
             dbHistory.updateHistorySession(sessionHistory);
-            SessionHistory history = dbHistory.getAllHistory(gameSession.getId()).get(dbHistory.getAllHistory(gameSession.getId()).size() - 1);
-            Log.d("HISTORY", "ID : " + history.getId());
-            Log.d("HISTORY", "COMMENT : " + history.getComment());
-            Log.d("HISTORY", "TYPE : " + history.getType());
-            Log.d("HISTORY", "DATE : " + history.getDate().toString());
+            historyFragment.updateHistory();
         }
+    }
+
+    // Called when click on a button
+    private void createSessionHistory(int sessionType) {
+        sessionHistory = new SessionHistory(0, gameSession.getId(), sessionType, "");
+        sessionHistory.setId(dbHistory.addHistory(sessionHistory));
+        historyFragment.updateHistory();
+    }
+
+    /*********************************/
+    /**********Close BUTTON**********/
+    /*******************************/
+
+    private void setupCloseSessionButton() {
+        closeSessionButton = (Button) view.findViewById(R.id.close_session);
+        if (gameSession.getIsActive()) {
+            closeSessionButton.setOnClickListener(closeSessionButtonClickListener);
+        } else {
+            closeSessionButton.setVisibility(View.GONE);
+        }
+    }
+
+    // Listener close session button
+    private View.OnClickListener closeSessionButtonClickListener = new View.OnClickListener() {
+        public void onClick(View v){
+            gameSession.setIsActive(false);
+            gameSession.setEndDate(new Date());
+            dbSession.updateGameSession(gameSession);
+        }
+    };
+
+    /*********************************/
+    /************WIN BUTTON**********/
+    /*******************************/
+
+    private void setupWin() {
+        winButton = (Button) view.findViewById(R.id.win_score_button);
+        winButton.setText(String.valueOf(gameSession.getNbWin()));
+        winButton.setOnClickListener(winButtonClickListener);
+        winButton.setOnLongClickListener(winButtonLongClickListener);
     }
 
     private void updateWin() {
@@ -141,44 +175,6 @@ public class Scoreboard extends Fragment {
             createSessionHistory(SessionHistory.TYPE_WIN);
         }
     }
-
-    private void updateDraw() {
-        if (gameSession.getIsActive()) {
-            gameSession.setNbDraw(gameSession.getNbDraw() + 1);
-            dbSession.updateGameSession(gameSession);
-            drawButton.setText(String.valueOf(gameSession.getNbDraw()));
-            createSessionHistory(SessionHistory.TYPE_DRAW);
-        }
-    }
-
-    private void updateLoose() {
-        if (gameSession.getIsActive()) {
-            gameSession.setNbLoose(gameSession.getNbLoose() + 1);
-            dbSession.updateGameSession(gameSession);
-            looseButton.setText(String.valueOf(gameSession.getNbLoose()));
-            createSessionHistory(SessionHistory.TYPE_LOOSE);
-        }
-    }
-
-    private void createSessionHistory(int sessionType) {
-        sessionHistory = new SessionHistory(0, gameSession.getId(), sessionType, "");
-        dbHistory.addHistory(sessionHistory);
-
-
-        SessionHistory history = dbHistory.getAllHistory(gameSession.getId()).get(dbHistory.getAllHistory(gameSession.getId()).size() - 1);
-        Log.d("HISTORY", "ID : " + history.getId());
-        Log.d("HISTORY", "COMMENT : " + history.getComment());
-        Log.d("HISTORY", "TYPE : " + history.getType());
-        Log.d("HISTORY", "DATE : " + history.getDate().toString());
-    }
-
-    private View.OnClickListener closeSessionButtonClickListener = new View.OnClickListener() {
-        public void onClick(View v){
-            gameSession.setIsActive(false);
-            gameSession.setEndDate(new Date());
-            dbSession.updateGameSession(gameSession);
-        }
-    };
 
     // Listener click for win button
     private View.OnClickListener winButtonClickListener = new View.OnClickListener(){
@@ -200,6 +196,32 @@ public class Scoreboard extends Fragment {
         }
     };
 
+    /*********************************/
+    /***********DRAW BUTTON**********/
+    /*******************************/
+
+    private void setupDraw() {
+        drawButton = (Button) view.findViewById(R.id.draw_score_button);
+        if (gameSession.getNbDraw() > -1) {
+            drawButton.setText(String.valueOf(gameSession.getNbDraw()));
+            drawButton.setOnClickListener(drawButtonClickListener);
+            drawButton.setOnLongClickListener(drawButtonLongClickListener);
+        } else {
+            TextView drawTitleButton = (TextView) view.findViewById(R.id.title_draw);
+            drawTitleButton.setVisibility(View.GONE);
+            drawButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateDraw() {
+        if (gameSession.getIsActive()) {
+            gameSession.setNbDraw(gameSession.getNbDraw() + 1);
+            dbSession.updateGameSession(gameSession);
+            drawButton.setText(String.valueOf(gameSession.getNbDraw()));
+            createSessionHistory(SessionHistory.TYPE_DRAW);
+        }
+    }
+
     // Listener click for draw button
     private View.OnClickListener drawButtonClickListener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -219,6 +241,27 @@ public class Scoreboard extends Fragment {
             return true;
         }
     };
+
+    /*********************************/
+    /**********LOOSE BUTTON**********/
+    /*******************************/
+
+    private void setupLooseButton() {
+        looseButton = (Button) view.findViewById(R.id.loose_score_button);
+        looseButton.setText(String.valueOf(gameSession.getNbLoose()));
+        looseButton.setOnClickListener(looseButtonClickListener);
+        looseButton.setOnLongClickListener(looseButtonLongClickListener);
+
+    }
+
+    private void updateLoose() {
+        if (gameSession.getIsActive()) {
+            gameSession.setNbLoose(gameSession.getNbLoose() + 1);
+            dbSession.updateGameSession(gameSession);
+            looseButton.setText(String.valueOf(gameSession.getNbLoose()));
+            createSessionHistory(SessionHistory.TYPE_LOOSE);
+        }
+    }
 
     // Listener click for loose button
     private View.OnClickListener looseButtonClickListener = new View.OnClickListener() {

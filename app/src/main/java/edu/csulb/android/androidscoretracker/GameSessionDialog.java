@@ -12,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.CheckBox;
 import android.widget.Spinner;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 
