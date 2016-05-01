@@ -26,7 +26,7 @@ public class Scoreboard extends Fragment {
     private Button looseButton;
 
     private GameDatabaseManager dbGame = new GameDatabaseManager();
-    private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager();
+    private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager(dbGame);
     private GameSession gameSession;
     private SessionHistoryDatabaseManager dbHistory = new SessionHistoryDatabaseManager();
     private SessionHistory sessionHistory;

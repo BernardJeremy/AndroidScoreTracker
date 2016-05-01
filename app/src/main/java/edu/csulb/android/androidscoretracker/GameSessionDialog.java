@@ -34,8 +34,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
     private EditText startDate;
     private EditText endDate;
 
-    private static GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager();
     private static GameDatabaseManager dbGame = new GameDatabaseManager();
+    private static GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager(dbGame);
 
     private GameSession gameSession = null;
 

@@ -21,6 +21,8 @@ public class MenuListAdapter extends BaseAdapter {
         mList = list;
     }
 
+    public void setNewData(ArrayList<NavigationItem> list) { mList = list; }
+
     @Override
     public int getCount() {
         return mList.size();

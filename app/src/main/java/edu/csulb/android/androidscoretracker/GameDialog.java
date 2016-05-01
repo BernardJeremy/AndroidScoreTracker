@@ -68,6 +68,7 @@ public class GameDialog extends DialogFragment implements OnClickListener {
             }
             this.dismiss();
         }
+        ((LoadingActivity)getActivity()).updateNavigationDrawer();
     }
 
     public static void showDialog(Activity context) {

@@ -18,7 +18,7 @@ public class GameDatabaseManager {
 
     public GameDatabaseManager () {
         db = DatabaseManager.getInstance().getDb();
-        dbSession = new GameSessionDatabaseManager();
+        dbSession = new GameSessionDatabaseManager(this);
     }
 
     //add a game in the database
@@ -63,6 +63,19 @@ public class GameDatabaseManager {
         res.close();
 
         return count;
+    }
+
+    public Game getLastGame() {
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " order by " + COLUMN_ID + " DESC LIMIT 1;", null);
+        res.moveToFirst();
+
+        Game game = new Game();
+        game.setId(res.getInt(res.getColumnIndex(COLUMN_ID)));
+        game.setName(res.getString(res.getColumnIndex(COLUMN_NAME)));
+        game.setSessions(dbSession.getAllGameSessionsFromGameId(game.getId()));
+        res.close();
+
+        return game;
     }
 
     //Get all games from the database
