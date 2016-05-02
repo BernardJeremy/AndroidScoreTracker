@@ -35,6 +35,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
     private static GameDatabaseManager dbGame = new GameDatabaseManager();
     private static GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager(dbGame);
 
+    private DateValidator dateValidator = new DateValidator();
+
     private GameSession gameSession = null;
 
     private ArrayAdapter<String> gameNameAdapter;
@@ -111,6 +113,8 @@ public class GameSessionDialog extends DialogFragment implements OnClickListener
     public void onClick(View view) {
         if (sessionNameTxt.getText().toString().isEmpty()) {
             Toast.makeText(getActivity(), "Please enter a session name", Toast.LENGTH_LONG).show();
+        } else if (!dateValidator.validate(startDate.getText().toString()) || !dateValidator.validate(endDate.getText().toString())) {
+            Toast.makeText(getActivity(), "Invalid date format : MM/DD/YYYY", Toast.LENGTH_LONG).show();
         } else {
             GameSession newGameSession = this.buildGameSession();
             if (gameSession == null) {
