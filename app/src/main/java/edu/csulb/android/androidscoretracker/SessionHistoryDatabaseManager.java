@@ -45,6 +45,27 @@ public class SessionHistoryDatabaseManager {
         return ret;
     }
 
+    public SessionHistory getLastHistoryIdForType(int type, int sessionId) {
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
+                " WHERE " + COLUMN_TYPE + " = " + type +
+                " AND " + COLUMN_SESSION_ID + " = " + sessionId +
+                " order by " + COLUMN_ID +
+                " DESC LIMIT 1;", null);
+        res.moveToFirst();
+        SessionHistory history = new SessionHistory();
+        history.setId(res.getInt(res.getColumnIndex(COLUMN_ID)));
+        history.setSessionId(res.getInt(res.getColumnIndex(COLUMN_SESSION_ID)));
+        history.setComment(res.getString(res.getColumnIndex(COLUMN_COMMENT)));
+        history.setType(res.getInt(res.getColumnIndex(COLUMN_TYPE)));
+        try {
+            history.setDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_DATE))));
+        } catch (Exception e) {
+        }
+        res.close();
+
+        return history;
+    }
+
     public int countHistory(int sessionId) {
         Cursor res= db.rawQuery("select COUNT(*) from " + TABLE_NAME + " where " + COLUMN_SESSION_ID + " = '" + sessionId + "';", null);
         res.moveToFirst();
