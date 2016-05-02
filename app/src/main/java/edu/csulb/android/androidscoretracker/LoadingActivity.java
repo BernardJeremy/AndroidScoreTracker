@@ -70,9 +70,6 @@ public class LoadingActivity extends AppCompatActivity {
                         GameSessionDialog.showDialog(LoadingActivity.this);
                         break;
                     default:
-                        //open the new fragment here
-                        //you should use the gameDb object directly here to get your game object and send it to your fragment
-                        //If you do it, you will not have to recreate a new DatabaseManager object and it is more optimized this way
                         Game chosenGame = gameDb.getGame(itemsList.get(position).getTitle());
                         drawerLayout.closeDrawer(Gravity.LEFT);
                         GameSessionListFragment fragmentS2 = GameSessionListFragment.newInstance(chosenGame.getName());

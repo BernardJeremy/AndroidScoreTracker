@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Scoreboard extends Fragment {
@@ -30,6 +31,8 @@ public class Scoreboard extends Fragment {
     private ImageButton winMinusButton;
     private ImageButton drawMinusButton;
     private ImageButton looseMinusButton;
+    private TextView winRateValue;
+    private TextView lastFiveValue;
 
     private GameDatabaseManager dbGame = new GameDatabaseManager();
     private GameSessionDatabaseManager dbSession = new GameSessionDatabaseManager(dbGame);
@@ -72,6 +75,7 @@ public class Scoreboard extends Fragment {
         setupHistoryFragment();
         setupStartDate();
         setupEndDate();
+        setupStatistics();
         setupCloseSessionButton();
         setupWin();
         setupDraw();
@@ -79,6 +83,32 @@ public class Scoreboard extends Fragment {
         setupMinusButtons();
 
         return view;
+    }
+
+    private void updateStatistics() {
+        double nbrWin = gameSession.getNbWin();
+        double nbrMatch = gameSession.getNbWin() + gameSession.getNbLoose();
+        nbrMatch += gameSession.getNbDraw() > -1 ? gameSession.getNbDraw() : 0;
+        nbrMatch = nbrMatch == 0 ? 1 : nbrMatch;
+        double winRate = (nbrWin / nbrMatch) * 100;
+        winRateValue.setText(String.format( "%.2f", winRate ));
+
+        int lastFiveWin = 0;
+        ArrayList<HistorySession> historySessions = dbHistory.getAllHistory(gameSession.getId());
+        for (int i = 0; i < historySessions.size() && i < 5; i++) {
+            int type = historySessions.get(i).getType();
+            if (type == HistorySession.TYPE_WIN) {
+                lastFiveWin++;
+            }
+        }
+        lastFiveValue.setText(String.format("%d", lastFiveWin));
+
+    }
+
+    private void setupStatistics() {
+        winRateValue =  (TextView) view.findViewById(R.id.win_rate_value);
+        lastFiveValue =  (TextView) view.findViewById(R.id.last_five_value);
+        updateStatistics();
     }
 
     private void setupHistoryFragment() {
@@ -182,6 +212,7 @@ public class Scoreboard extends Fragment {
             dbSession.updateGameSession(gameSession);
             winButton.setText(String.valueOf(gameSession.getNbWin()));
             createSessionHistory(HistorySession.TYPE_WIN);
+            updateStatistics();
         } else {
             Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
         }
@@ -230,6 +261,7 @@ public class Scoreboard extends Fragment {
             dbSession.updateGameSession(gameSession);
             drawButton.setText(String.valueOf(gameSession.getNbDraw()));
             createSessionHistory(HistorySession.TYPE_DRAW);
+            updateStatistics();
         } else {
             Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
         }
@@ -273,6 +305,7 @@ public class Scoreboard extends Fragment {
             dbSession.updateGameSession(gameSession);
             looseButton.setText(String.valueOf(gameSession.getNbLoose()));
             createSessionHistory(HistorySession.TYPE_LOOSE);
+            updateStatistics();
         } else {
             Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
         }
@@ -336,6 +369,7 @@ public class Scoreboard extends Fragment {
         @Override
         public void onClick(View v) {
             removeWin();
+            updateStatistics();
         }
     };
 
@@ -361,6 +395,7 @@ public class Scoreboard extends Fragment {
         @Override
         public void onClick(View v) {
             removeDraw();
+            updateStatistics();
         }
     };
 
@@ -386,6 +421,7 @@ public class Scoreboard extends Fragment {
         @Override
         public void onClick(View v) {
             removeLoose();
+            updateStatistics();
         }
     };
 }
