@@ -83,12 +83,40 @@ public class SessionHistoryDatabaseManager {
         db.delete(TABLE_NAME, "id = ?", new String[]{Integer.toString(history.getId())});
     }
 
+    //Delete a specific history session from a database
+    public void deleteLastHistoryForType(int type, int sessionId) {
+        SessionHistory history = this.getLastHistoryIdForType(type, sessionId);
+        this.deleteHistory(history);
+    }
+
     //Update a history session in the database
     public void updateHistorySession(SessionHistory history) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_COMMENT, history.getComment());
         values.put(COLUMN_TYPE, history.getType());
         values.put(COLUMN_DATE, dateFormat.format(history.getDate()));
-        db.update(TABLE_NAME, values, "id = ?", new String[] {Integer.toString(history.getId())});
+        db.update(TABLE_NAME, values, "id = ?", new String[]{Integer.toString(history.getId())});
+    }
+
+    //Retrieve last history for a specific type
+    public SessionHistory getLastHistoryIdForType(int type, int sessionId) {
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME +
+                " WHERE " + COLUMN_TYPE + " = " + type +
+                " AND " + COLUMN_SESSION_ID + " = " + sessionId +
+                " order by " + COLUMN_ID +
+                " DESC LIMIT 1;", null);
+        res.moveToFirst();
+        SessionHistory history = new SessionHistory();
+        history.setId(res.getInt(res.getColumnIndex(COLUMN_ID)));
+        history.setSessionId(res.getInt(res.getColumnIndex(COLUMN_SESSION_ID)));
+        history.setComment(res.getString(res.getColumnIndex(COLUMN_COMMENT)));
+        history.setType(res.getInt(res.getColumnIndex(COLUMN_TYPE)));
+        try {
+            history.setDate(dateFormat.parse(res.getString(res.getColumnIndex(COLUMN_DATE))));
+        } catch (Exception e) {
+        }
+        res.close();
+
+        return history;
     }
 }
