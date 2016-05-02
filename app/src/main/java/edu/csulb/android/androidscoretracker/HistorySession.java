@@ -2,7 +2,7 @@ package edu.csulb.android.androidscoretracker;
 
 import java.util.Date;
 
-public class SessionHistory {
+public class HistorySession {
     private int id;
     private int sessionId;
     private int type;
@@ -14,7 +14,7 @@ public class SessionHistory {
     public static final int TYPE_DRAW = 2;
     public static final int TYPE_LOOSE = 3;
 
-    public SessionHistory(int id, int sessionId, int type, String comment, Date date) {
+    public HistorySession(int id, int sessionId, int type, String comment, Date date) {
         this.id = id;
         this.date = date;
         this.sessionId = sessionId;
@@ -22,7 +22,7 @@ public class SessionHistory {
         this.comment = comment;
     }
 
-    public SessionHistory(int id, int sessionId, int type, String comment) {
+    public HistorySession(int id, int sessionId, int type, String comment) {
         this.id = id;
         this.date = new Date();
         this.sessionId = sessionId;
@@ -30,11 +30,11 @@ public class SessionHistory {
         this.comment = comment;
     }
 
-    public SessionHistory() {
+    public HistorySession() {
         this.id = 0;
         this.date = new Date();
         this.sessionId = 0;
-        this.type = SessionHistory.TYPE_UNDEFINED;
+        this.type = HistorySession.TYPE_UNDEFINED;
         this.comment = "";
     }
 

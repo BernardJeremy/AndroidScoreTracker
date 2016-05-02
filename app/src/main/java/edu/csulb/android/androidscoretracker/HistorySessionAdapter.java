@@ -9,15 +9,15 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 
-public class HistorySessionAdapter extends ArrayAdapter<SessionHistory>{
+public class HistorySessionAdapter extends ArrayAdapter<HistorySession>{
 
     private Context context;
-    private SessionHistory[] sessionHistory;
+    private HistorySession[] historySession;
 
-    public HistorySessionAdapter(Context context, SessionHistory[] values) {
+    public HistorySessionAdapter(Context context, HistorySession[] values) {
         super(context, -1, values);
         this.context = context;
-        sessionHistory = values;
+        historySession = values;
     }
 
     @Override
@@ -32,14 +32,14 @@ public class HistorySessionAdapter extends ArrayAdapter<SessionHistory>{
         TextView comment = (TextView) historyItemView.findViewById(R.id.comment);
 
         String strType;
-        switch (sessionHistory[position].getType()) {
-            case SessionHistory.TYPE_WIN:
+        switch (historySession[position].getType()) {
+            case HistorySession.TYPE_WIN:
                 strType = "WIN";
                 break;
-            case SessionHistory.TYPE_DRAW:
+            case HistorySession.TYPE_DRAW:
                 strType = "DRAW";
                 break;
-            case SessionHistory.TYPE_LOOSE:
+            case HistorySession.TYPE_LOOSE:
                 strType = "LOOSE";
                 break;
             default:
@@ -49,8 +49,8 @@ public class HistorySessionAdapter extends ArrayAdapter<SessionHistory>{
         type.setText(strType);
 
         SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
-        date.setText(sdf.format(sessionHistory[position].getDate()));
-        comment.setText(sessionHistory[position].getComment());
+        date.setText(sdf.format(historySession[position].getDate()));
+        comment.setText(historySession[position].getComment());
 
         return historyItemView;
     }

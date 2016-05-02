@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class HistorySessionList extends Fragment {
 
-    private SessionHistoryDatabaseManager sessionHistoryDatabaseManager = new SessionHistoryDatabaseManager();
+    private HistorySessionDatabaseManager historySessionDatabaseManager = new HistorySessionDatabaseManager();
     private ListView listView;
 
     public static HistorySessionList newInstance(int idSession) {
@@ -43,10 +43,10 @@ public class HistorySessionList extends Fragment {
     public void updateHistory() {
         Integer sessionId = getArguments().getInt("idSession");
 
-        ArrayList<SessionHistory> arrayListSessionHistory = sessionHistoryDatabaseManager.getAllHistory(sessionId);
+        ArrayList<HistorySession> arrayListHistorySession = historySessionDatabaseManager.getAllHistory(sessionId);
 
         HistorySessionAdapter adapter = new HistorySessionAdapter(getActivity(),
-                arrayListSessionHistory.toArray(new SessionHistory[arrayListSessionHistory.size()]));
+                arrayListHistorySession.toArray(new HistorySession[arrayListHistorySession.size()]));
 
         listView.setAdapter(adapter);
     }
