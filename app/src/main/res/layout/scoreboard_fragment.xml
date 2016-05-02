@@ -69,98 +69,143 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:id="@+id/title_win"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_win_button"
-            android:layout_marginLeft="11dp"
-            android:textStyle="bold"/>
-        <Button
-            android:id="@+id/win_score_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/blue"
-            android:layout_marginLeft="10dp"
-            android:textStyle="bold"
-            android:textSize="20dp"/>
-        <ImageButton
-            android:id="@+id/minus_win"
-            android:background="@android:color/transparent"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/ic_minus_circle"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textStyle="bold">
-
-        <TextView
-            android:id="@+id/title_draw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/label_draw_button"
-            android:layout_marginLeft="2dp"
-            android:textStyle="bold"/>
-        <Button
-            android:id="@+id/draw_score_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/blue"
-            android:layout_marginLeft="10dp"
-            android:textStyle="bold"
-            android:textSize="20dp"/>
-
-        <ImageButton
-            android:id="@+id/minus_draw"
-            android:background="@android:color/transparent"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/ic_minus_circle"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/title_loose"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/label_loose_button"
-            android:textStyle="bold"/>
-        <Button
-            android:id="@+id/loose_score_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/blue"
-            android:layout_marginLeft="10dp"
-            android:textStyle="bold"
-            android:textSize="20dp"/>
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
 
-        <ImageButton
-            android:id="@+id/minus_loose"
-            android:background="@android:color/transparent"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@mipmap/ic_minus_circle"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"/>
+                <TextView
+                    android:id="@+id/title_win"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_win_button"
+                    android:layout_marginLeft="11dp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/win_score_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+                <ImageButton
+                    android:id="@+id/minus_win"
+                    android:background="@android:color/transparent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_minus_circle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textStyle="bold">
+
+                <TextView
+                    android:id="@+id/title_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_draw_button"
+                    android:layout_marginLeft="2dp"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/draw_score_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+                <ImageButton
+                    android:id="@+id/minus_draw"
+                    android:background="@android:color/transparent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_minus_circle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/title_loose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_loose_button"
+                    android:textStyle="bold"/>
+                <Button
+                    android:id="@+id/loose_score_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blue"
+                    android:layout_marginLeft="10dp"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+                <ImageButton
+                    android:id="@+id/minus_loose"
+                    android:background="@android:color/transparent"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/ic_minus_circle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="50dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="stat1"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="stat2"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

@@ -307,6 +307,9 @@ public class Scoreboard extends Fragment {
         winMinusButton.setOnClickListener(winMinusButtonClickListener);
         drawMinusButton = (ImageButton) view.findViewById(R.id.minus_draw);
         drawMinusButton.setOnClickListener(drawMinusButtonClickListener);
+        if (gameSession.getNbDraw() == -1) {
+            drawMinusButton.setVisibility(View.GONE);
+        }
         looseMinusButton = (ImageButton) view.findViewById(R.id.minus_loose);
         looseMinusButton.setOnClickListener(looseMinusButtonClickListener);
     }
