@@ -324,6 +324,8 @@ public class Scoreboard extends Fragment {
                 gameSession.setNbWin(gameSession.getNbWin() - 1);
                 dbSession.updateGameSession(gameSession);
                 winButton.setText(String.valueOf(gameSession.getNbWin()));
+                dbHistory.deleteLastHistoryForType(HistorySession.TYPE_WIN, gameSession.getId());
+                historyFragment.updateHistory();
             }
         } else {
             Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
@@ -347,6 +349,8 @@ public class Scoreboard extends Fragment {
                 gameSession.setNbDraw(gameSession.getNbDraw() - 1);
                 dbSession.updateGameSession(gameSession);
                 drawButton.setText(String.valueOf(gameSession.getNbDraw()));
+                dbHistory.deleteLastHistoryForType(HistorySession.TYPE_DRAW, gameSession.getId());
+                historyFragment.updateHistory();
             }
         } else {
             Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
@@ -370,6 +374,8 @@ public class Scoreboard extends Fragment {
                 gameSession.setNbLoose(gameSession.getNbLoose() - 1);
                 dbSession.updateGameSession(gameSession);
                 looseButton.setText(String.valueOf(gameSession.getNbLoose()));
+                dbHistory.deleteLastHistoryForType(HistorySession.TYPE_LOOSE, gameSession.getId());
+                historyFragment.updateHistory();
             }
         } else {
             Toast.makeText(getActivity(), "Session closes - You cannot make a change", Toast.LENGTH_SHORT).show();
