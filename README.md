@@ -18,6 +18,6 @@ Android app allowing to track the score of any kind and any number of games/spor
 - Fix bug : Press return now normaly return to the previous fragment (1 day) => Aurelien
 
 Authors:
-Claire Almozinos : 014930667
-Jeremy Bernard : 014930732
-Aurélien Gilliouard : 014930797
+- Claire Almozinos : 014930667
+- Jeremy Bernard : 014930732
+- Aurélien Gilliouard : 014930797
